@@ -16,7 +16,8 @@ def initializeLogger():
     logger = logging.getLogger()
     logger.setLevel(logging.INFO)
     formatter = logging.Formatter('%(asctime)s | %(levelname)s | %(message)s')
-    file_handler = logging.FileHandler('logs.log')
+    log_file_name = datetime.datetime.now().strftime('glider_log_%Y_%m_%d_%H_%M.log')
+    file_handler = logging.FileHandler(log_file_name)
     file_handler.setLevel(logging.INFO)
     file_handler.setFormatter(formatter)
     stdout_handler = logging.StreamHandler(sys.stdout)
@@ -46,9 +47,9 @@ def chooseRandomSide():
 #function to perform the actual test
 def runTest(test_endtime, max_interval):
     start_time = datetime.datetime.now()
-    logger.info("Test end time is: " + test_endtime)
-    logger.info("Test interval is: " + interval + " seconds")
-    logger.info("Now beginning test! Time is: " + start_time)
+    logger.info("Test end time is: " + str(datetime.datetime.fromtimestamp(test_endtime).strftime('%c')))
+    #logger.info("Test interval is: " + interval + " seconds")
+    logger.info("Now beginning test! Time is: " + str(start_time))
     while time.time() < test_endtime:
         interval = random.randint(1,max_interval)
 
@@ -60,11 +61,11 @@ def runTest(test_endtime, max_interval):
         if(random_side == Side.LEFT):
             chosen_led = left_led
             chosen_speaker = left_speaker
-            logger.info("Playing sound to LEFT speaker! Time is: " + datetime.datetime.now())
+            logger.info("Playing sound to LEFT speaker! Time is: " + str(datetime.datetime.now()))
         else:
             chosen_led = right_led
             chosen_speaker = right_speaker
-            logger.info("Playing sound to RIGHT speaker! Time is: " + datetime.datetime.now())
+            logger.info("Playing sound to RIGHT speaker! Time is: " + str(datetime.datetime.now()))
 
         #actually play the light/sound
         playLightAndSound(chosen_led, chosen_speaker)
@@ -73,7 +74,7 @@ def runTest(test_endtime, max_interval):
 #initialize pygame mixer
 def initializeSound():
     pygame.mixer.init()
-    soundfile = '/home/test/glidertestcode/M00188(frankie).WAV'
+    soundfile = '/home/test/kro_glider_project/M00188(frankie).WAV'
     sound = pygame.mixer.Sound(soundfile)
     return sound
 
